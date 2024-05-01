@@ -28,12 +28,12 @@ if (req.session.authorization){
     )
 }
 else{
-  return res.status(403).josn("user  did not logged in");
+  return res.status(403).json("user  did not logged in");
 }
 }
 );
  
-const PORT =7767;
+const PORT =5000;
 
 app.use("/customer", customer_routes);
 app.use("/", genl_routes);
