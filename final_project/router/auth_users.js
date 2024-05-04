@@ -77,9 +77,9 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   let name=req.body.name;
   let review=req.body.review;
   if (isbn_new ){
-  for (values in books){
-    if (books[values].isbn==isbn2){
-      books[values].reviews={name:review}
+
+    if (books[isbn_new]){
+      books[isbn_new].reviews={name:review}
       res.send("the review stored successfuly");
     }
     else{
@@ -91,14 +91,14 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     res.send("there no input of isbn")
   }
 
-}});
+});
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
   const username = req.session.authorization["username"];
 
-  for (values in books) {
-    if (books[values].isbn== isbn) {
+
+    if (books[isbn]) {
     
 
       if (values.reviews) {
@@ -111,12 +111,14 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
       } else {
         return res.status(404).json({ message: "Review not found" });
       }
+    
     }
-  }
+    else{
+  
 
   // If the loop completes without finding the book
   return res.status(404).json({ message: "Book not found" });
-});
+}});
 
 
 module.exports.authenticated = regd_users;
