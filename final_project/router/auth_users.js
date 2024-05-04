@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 let books = require("./booksdb.js");
 const regd_users = express.Router();
 
-let users = [];
+var users = [{"username":"naol","password":"ew12"}]
 
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
@@ -20,8 +20,8 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 //write code to check if username and password match the one we have in records.
 
 if (isValid(username)){
-  value=users.filter((user)=>{
-    return user.username==username && user.password===password}
+  value=users.filter((users)=>{
+    return users.username==username && users.password===password}
   )
 
  if (value.length>0){
@@ -38,7 +38,7 @@ regd_users.post("/login", (req,res) => {
 
   const username = req.query.username;
   const password = req.query.password;
-
+  
   //Write your code here
 
   if (!username || !password) {
@@ -49,7 +49,7 @@ regd_users.post("/login", (req,res) => {
     if(authenticatedUser(username, password)){
         let accesToken = jwt.sign({
           data : password 
-        },"accessKey")
+        },"fingerprint_customer")
 
         req.session.authorization = {accesToken, username}
      
@@ -69,8 +69,29 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
-});
+  if (req.session.authorization){
+
+  
+  let isbn_new=req.params.isbn;
+  let isbn2=parseInt(isbn_new)
+  let name=req.body.name;
+  let review=req.body.review;
+  if (isbn_new ){
+  for (values in books){
+    if (books[values].isbn==isbn2){
+      books[values].reviews={name:review}
+      res.send("the review stored successfuly");
+    }
+    else{
+     res.send("the book does not exist");
+    }
+  
+  }}
+  else{
+    res.send("there no input of isbn")
+  }
+
+}});
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
