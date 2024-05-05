@@ -22,7 +22,7 @@ public_users.post("/register", (req,res) => {
       users.push({"username":username,"password":password});
 
       
-      res.send(`user ${username} regesterd successfully}`);
+      res.send(`user ${username} regesterd successfully`);
     };
   }
   
@@ -41,7 +41,7 @@ public_users.get('/',function (req, res) {
  
 });
 //using async and axios for out
-public_users.get('/', async function (req, res) {
+public_users.get('/async', async function (req, res) {
   try{
     const response = await axios.get('http://localhost:5000/');
     if(response.data){
@@ -138,7 +138,7 @@ public_users.get('/title/:title',function (req, res) {
   for(keys in books){
     string=books[keys].title
     new_string=string.split(" ").join("")
-    if (new_string===title1){
+    if (new_string===title_of_the_book){
       result.push(books[keys])
     }
   }
